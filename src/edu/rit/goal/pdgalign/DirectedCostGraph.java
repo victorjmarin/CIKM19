@@ -13,21 +13,14 @@ import java.util.stream.Collectors;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
 import edu.rit.goal.pdgalign.graphlet.DirectedGraphletCounter;
-import edu.rit.goal.pdgalign.graphlet.Node;
 import edu.rit.goal.sourcedg.PDG;
 import edu.rit.goal.sourcedg.Vertex;
 
-
 public class DirectedCostGraph implements Serializable {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8784162760888242186L;
 
 	private PDG pdg;
 	private Map<Vertex, int[]> signatures;
-	private Map<Long, Node> nodes;
 	private int maxDegree;
 	private Map<List<Integer>, List<Vertex>> symmetricNodes;
 	private Set<Vertex> indiscernibleNodes;
@@ -85,10 +78,6 @@ public class DirectedCostGraph implements Serializable {
 
 	public Map<Vertex, int[]> getSignatures() {
 		return signatures;
-	}
-
-	public Map<Long, Node> getNodes() {
-		return nodes;
 	}
 
 	public int getMaxDegree() {

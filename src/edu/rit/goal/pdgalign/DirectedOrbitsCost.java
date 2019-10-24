@@ -16,7 +16,7 @@ public class DirectedOrbitsCost {
 
 	private DirectedCostGraph g1;
 	private DirectedCostGraph g2;
-	private float[][] costMat;
+	private double[][] costMat;
 	private int minG1, minG2;
 
 	private Map<Vertex, Set<String>> typesCache = new ConcurrentHashMap<>();
@@ -35,7 +35,7 @@ public class DirectedOrbitsCost {
 		int maxG2 = (int) g2.vertexSet().stream().map(v -> v.getId()).mapToLong(Long::longValue).max().getAsLong();
 		int dim1 = maxG1 - minG1 + 1;
 		int dim2 = maxG2 - minG2 + 1;
-		costMat = new float[dim1][dim2];
+		costMat = new double[dim1][dim2];
 
 		for (List<Vertex> l1 : g1.getSymmetricNodes().values()) {
 			Vertex representative1 = l1.get(0);
@@ -80,18 +80,17 @@ public class DirectedOrbitsCost {
 		return (float) (num / DirectedGraphletCounter.weightSum);
 	}
 
-	public float euclidean(int[] p1, int[] p2) {
-		float sum = 0;
+	public double euclidean(int[] p1, int[] p2) {
+		double sum = .0;
 		for (int i = 0; i < p1.length; i++) {
-			float dp = p1[i] - p2[i];
+			double dp = p1[i] - p2[i];
 			dp *= DirectedGraphletCounter.weights[i];
 			sum += dp * dp;
 		}
-		double res = Math.sqrt(sum);
-		return (float) res;
+		return Math.sqrt(sum);
 	}
 
-	private float semanticCost(Vertex v1, Vertex v2) {
+	private double semanticCost(Vertex v1, Vertex v2) {
 		Set<String> v1Types = typesCache.get(v1);
 		Set<String> v2Types = typesCache.get(v2);
 
@@ -112,10 +111,9 @@ public class DirectedOrbitsCost {
 		return jaccardDistance(v1Types, v2Types);
 	}
 
-	public float jaccardIndex(Set<String> s1, Set<String> s2) {
-
+	public double jaccardIndex(Set<String> s1, Set<String> s2) {
 		if (s1.isEmpty() && s2.isEmpty())
-			return 1;
+			return 1.0;
 
 		Integer hash = s1.hashCode() + s2.hashCode();
 		Float result = jaccardCache.get(hash);
@@ -133,11 +131,11 @@ public class DirectedOrbitsCost {
 		return result;
 	}
 
-	public float jaccardDistance(Set<String> s1, Set<String> s2) {
-		return 1 - jaccardIndex(s1, s2);
+	public double jaccardDistance(Set<String> s1, Set<String> s2) {
+		return 1.0 - jaccardIndex(s1, s2);
 	}
 
-	public float get(Vertex v1, Vertex v2) {
+	public double get(Vertex v1, Vertex v2) {
 		if (costMat == null) {
 			buildCostMatrix();
 		}

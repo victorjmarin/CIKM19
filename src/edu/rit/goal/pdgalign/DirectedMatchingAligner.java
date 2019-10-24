@@ -48,7 +48,7 @@ public class DirectedMatchingAligner implements Aligner {
 
 		for (Vertex v1 : g1.nodesOfInterest()) {
 			for (Vertex v2 : g2.nodesOfInterest()) {
-				double sim = 1 - cost.get(v1, v2);
+				double sim = 1.0 - cost.get(v1, v2);
 				// Do not include edges with 0 similarity.
 				// Commented because it was dramatically reducing coverable stmts.
 				if (sim != 0d) {
