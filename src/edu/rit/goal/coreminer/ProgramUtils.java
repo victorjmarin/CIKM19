@@ -1,6 +1,8 @@
 package edu.rit.goal.coreminer;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,6 +54,39 @@ public class ProgramUtils {
 		return pdgs;
 	}
 
+	public static List<PDG> readSerializedPDGs(String path) {
+		File folder = new File(path);
+		File[] files = folder.listFiles();
+		List<PDG> pdgs = new ArrayList<>();
+
+		try {
+
+			for (File file : files) {
+				if (!file.getName().endsWith(".ser"))
+					continue;
+
+				try {
+
+					FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+					ObjectInputStream in = new ObjectInputStream(fis);
+
+					PDG pdg = (PDG) in.readObject();
+
+					in.close();
+					fis.close();
+
+					pdgs.add(pdg);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (NullPointerException e) {
+			System.out.println("Could not find serialized submissions. Did you unzip the 'assignments.zip' file?");
+		}
+
+		return pdgs;
+	}
+
 	public static List<PDG> buildPDGs(Collection<Path> programs) {
 		List<PDG> pdgs = programs.parallelStream().map(p -> pdg(p)).collect(Collectors.toList());
 		setVerticesPDG(pdgs);
@@ -60,10 +95,8 @@ public class ProgramUtils {
 	}
 
 	private static void removeUnusedDefinitions(Collection<PDG> programs) {
-		int totalUnused = 0;
 		for (PDG g : programs) {
-			Set<Vertex> unused = g.removeUnusedDefinitions();
-			totalUnused += unused.size();
+			g.removeUnusedDefinitions();
 		}
 	}
 

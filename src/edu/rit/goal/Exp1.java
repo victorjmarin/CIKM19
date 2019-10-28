@@ -1,7 +1,6 @@
 package edu.rit.goal;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -57,9 +56,13 @@ public class Exp1 {
 
 		String path = assgn.pathToPrograms;
 
-		List<Path> P = ProgramUtils.listPrograms(path);
+		List<PDG> pdgs = ProgramUtils.readSerializedPDGs(path);
 
-		List<PDG> pdgs = ProgramUtils.buildPDGs(P);
+		if (pdgs.isEmpty())
+			System.exit(-1);
+
+		System.out.println("programs=" + pdgs.size());
+		System.out.println();
 
 		long alignStartTime = System.nanoTime();
 
@@ -68,9 +71,6 @@ public class Exp1 {
 				aligner);
 
 		long alignTime = System.nanoTime() - alignStartTime;
-
-		System.out.println("programs=" + P.size());
-		System.out.println();
 
 		Map<CoreStmt, Integer[]> core2ItMu = LazyMap.lazyMap(new HashMap<>(), () -> new Integer[2]);
 		Map<Vertex, Integer> vtx2coreness = new HashMap<>();

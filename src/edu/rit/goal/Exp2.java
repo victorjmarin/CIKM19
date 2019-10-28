@@ -1,6 +1,5 @@
 package edu.rit.goal;
 
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +24,8 @@ import edu.rit.goal.sourcedg.PDG;
 import edu.rit.goal.sourcedg.Vertex;
 
 public class Exp2 {
+	
+	private static final int MIN_MU = 5;
 
 	private static final double[][] EXP = { { 7, 0.7, 0.05 }, { 7, 0.7, 0.1 }, { 0, 0.6, 0.05 }, { 0, 0.6, 0.1 },
 			{ 0, 1.0, 0.05 }, { 0, 1.0, 0.1 }, { 1, 0.6, 0.05 }, { 1, 0.6, 0.1 }, { 1, 1.0, 0.05 }, { 1, 1.0, 0.1 },
@@ -49,9 +50,13 @@ public class Exp2 {
 
 		String path = assgn.pathToPrograms;
 
-		List<Path> P = ProgramUtils.listPrograms(path);
-
-		List<PDG> pdgs = ProgramUtils.buildPDGs(P);
+		List<PDG> pdgs = ProgramUtils.readSerializedPDGs(path);
+		
+		if (pdgs.isEmpty())
+			System.exit(-1);
+		
+		System.out.println("programs=" + pdgs.size());
+		System.out.println();
 
 		long alignStartTime = System.nanoTime();
 
@@ -60,9 +65,6 @@ public class Exp2 {
 				aligner);
 
 		long alignTime = System.nanoTime() - alignStartTime;
-
-		System.out.println("programs=" + P.size());
-		System.out.println();
 
 		Map<CoreStmt, Integer[]> core2ItMu = LazyMap.lazyMap(new HashMap<>(), () -> new Integer[2]);
 		Map<Vertex, Integer> vtx2coreness = new HashMap<>();
@@ -88,7 +90,7 @@ public class Exp2 {
 
 			long scanStartTime = System.nanoTime();
 
-			int mu = Math.max(5, (int) (numSubs * muPct));
+			int mu = Math.max(MIN_MU, (int) (numSubs * muPct));
 
 			itCores = computeSCAN(Ac, mu, eps);
 
