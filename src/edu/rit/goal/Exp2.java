@@ -23,10 +23,32 @@ import edu.rit.goal.pdgalign.PairwiseAligner;
 import edu.rit.goal.sourcedg.PDG;
 import edu.rit.goal.sourcedg.Vertex;
 
+/**
+ * Runs an iterative process for core statement mining with µ set to a percentage of the submissions and fixed ε.
+ *
+ */
 public class Exp2 {
 	
+	// Minimum number of statements to form a core statement.
 	private static final int MIN_MU = 5;
 
+	/** 
+	 * Different experiment configurations expressed as {assignment_id, epsilon, percentage of submissions to use as mu}.
+	 * 
+	 * assignment	id		URL
+	 * ---------------------------------------------------------------
+	 * JOHNY		0		https://www.codechef.com/problems/JOHNY
+	 * CARVANS		1		https://www.codechef.com/problems/CARVANS
+	 * BUYING2		2		https://www.codechef.com/problems/BUYING2
+	 * MUFFINS3		3		https://www.codechef.com/problems/MUFFINS3
+	 * CLEANUP		4		https://www.codechef.com/problems/CLEANUP
+	 * CONFLIP		5		https://www.codechef.com/problems/CONFLIP
+	 * LAPIN		6		https://www.codechef.com/problems/LAPIN
+	 * PERMUT2		7		https://www.codechef.com/problems/PERMUT2
+	 * STONES		8		https://www.codechef.com/problems/STONES
+	 * SUMTRIAN		9		https://www.codechef.com/problems/SUMTRIAN
+	 * 
+	 */
 	private static final double[][] EXP = { { 7, 0.7, 0.05 }, { 7, 0.7, 0.1 }, { 0, 0.6, 0.05 }, { 0, 0.6, 0.1 },
 			{ 0, 1.0, 0.05 }, { 0, 1.0, 0.1 }, { 1, 0.6, 0.05 }, { 1, 0.6, 0.1 }, { 1, 1.0, 0.05 }, { 1, 1.0, 0.1 },
 			{ 2, 0.6, 0.05 }, { 2, 0.6, 0.1 }, { 2, 1.0, 0.05 }, { 2, 1.0, 0.1 }, { 3, 0.6, 0.05 }, { 3, 0.6, 0.1 },

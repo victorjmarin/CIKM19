@@ -34,10 +34,32 @@ import edu.rit.goal.pdgalign.PairwiseAligner;
 import edu.rit.goal.sourcedg.PDG;
 import edu.rit.goal.sourcedg.Vertex;
 
+/**
+ * Runs a single iteration of the core statement mining with fixed µ and ε.
+ * 
+ */
 public class Exp1 {
 
+	// Minimum number of statements to form a core statement.
 	private static final int MU = 5;
 
+	/** 
+	 * Different experiment configurations expressed as {assignment_id, epsilon}.
+	 * 
+	 * assignment	id		URL
+	 * ---------------------------------------------------------------
+	 * JOHNY		0		https://www.codechef.com/problems/JOHNY
+	 * CARVANS		1		https://www.codechef.com/problems/CARVANS
+	 * BUYING2		2		https://www.codechef.com/problems/BUYING2
+	 * MUFFINS3		3		https://www.codechef.com/problems/MUFFINS3
+	 * CLEANUP		4		https://www.codechef.com/problems/CLEANUP
+	 * CONFLIP		5		https://www.codechef.com/problems/CONFLIP
+	 * LAPIN		6		https://www.codechef.com/problems/LAPIN
+	 * PERMUT2		7		https://www.codechef.com/problems/PERMUT2
+	 * STONES		8		https://www.codechef.com/problems/STONES
+	 * SUMTRIAN		9		https://www.codechef.com/problems/SUMTRIAN
+	 * 
+	 */
 	private static final double[][] EXP = { { 0, 0.85 }, { 0, 0.9 }, { 0, 0.95 }, { 1, 0.85 }, { 1, 0.9 }, { 1, 0.95 },
 			{ 2, 0.85 }, { 2, 0.9 }, { 2, 0.95 }, { 3, 0.85 }, { 3, 0.9 }, { 3, 0.95 }, { 4, 0.85 }, { 4, 0.9 },
 			{ 4, 0.95 }, { 5, 0.85 }, { 5, 0.9 }, { 5, 0.95 }, { 6, 0.85 }, { 6, 0.9 }, { 6, 0.95 }, { 7, 0.85 },
